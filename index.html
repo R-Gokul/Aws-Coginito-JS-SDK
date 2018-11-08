@@ -12,7 +12,26 @@
     </head>
     <body>
         <div id="config">
-            
+            <form name="formConfig">
+                <h2>Configure</h2>
+    
+                <div>
+                    <label for="UserPoolId">UserPoolId</label>
+                    <input type="text" placeholder="UserPoolId" name="UserPoolId">
+                </div>
+    
+                <div>
+                    <label for="ClientId">ClientId</label>
+                    <input type="text" placeholder="ClientId" name="ClientId">
+                </div>
+    
+                <div class="foot">
+                    <div class="submit">
+                        <button id="clearButton">Clear</button>
+                        <input type="submit" value="Configure">
+                    </div>
+                </div>
+            </form>
         </div>
         <script src="index.js"></script>  
     </body>
