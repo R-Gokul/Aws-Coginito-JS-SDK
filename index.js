@@ -120,7 +120,7 @@ const signup = event => {
 		}),
 	]
 
-    const errors = signupForm
+    const errors = signupFormgi
     	.getElementsByClassName('errors')[0]
     const success = signupForm
     	.getElementsByClassName('success')[0]
