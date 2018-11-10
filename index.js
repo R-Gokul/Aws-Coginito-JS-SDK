@@ -68,3 +68,75 @@ const configure = event => {
 };
 
 formConfig.onsubmit = configure;
+
+// sign up - (Cognito should have a clinet with web)
+/ Normal User Flow Forms
+
+const signup = event => {
+	event.preventDefault()
+
+	if (!userPoolIsConfigured()) {
+		userPoolWarning()
+	}
+
+	const birthdate = signupForm['birthdate'].value
+	const email = signupForm['email'].value
+	const gender = signupForm['gender'].value
+	const name = signupForm['name'].value
+	const password = signupForm['password'].value
+	const phoneNumber = signupForm['phone_number'].value
+
+	// console.log(birthdate)
+	// console.log(email)
+	// console.log(gender)
+	// console.log(name)
+	// console.log(password)
+	// console.log(phoneNumber)
+
+	const userAttributes = [
+		new userAttribute({
+		    Name: 'name',
+		    Value: name
+		}),
+
+		new userAttribute({
+		    Name: 'email',
+		    Value: email
+		}),
+
+		new userAttribute({
+		    Name: 'phone_number',
+		    Value: phoneNumber
+		}),
+
+		new userAttribute({
+		    Name: 'birthdate',
+		    Value: birthdate
+		}),
+
+		new userAttribute({
+		    Name: 'gender',
+		    Value: gender
+		}),
+	]
+
+    const errors = signupForm
+    	.getElementsByClassName('errors')[0]
+    const success = signupForm
+    	.getElementsByClassName('success')[0]
+
+	userPool.signUp(email, password, userAttributes, null, (err, result) => {
+	    if (err) {
+	    	success.innerHTML = ''
+	    	errors.innerHTML = err
+	        return
+	    }
+
+	    errors.innerHTML = ''
+	    success.innerHTML = JSON.stringify(result, null, 2)
+	})
+
+	return false
+}
+
+signupForm.onsubmit = signup

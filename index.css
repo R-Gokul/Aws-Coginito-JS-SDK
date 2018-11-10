@@ -1,0 +1,68 @@
+body {
+	padding: 10px;
+	font-family: arial;
+	font-size: 80%;
+}
+
+div.container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+form {
+	background: #eee;
+	border-radius: 5px;
+	flex-direction: row;
+	flex-grow: 1;
+	vertical-align: top;
+	padding: 0 20px;
+	display: inline-block;
+	margin: 5px;
+	position: relative;
+	padding-bottom: 30px;
+}
+
+form > div {
+	display: block;
+	margin-bottom: 12px;
+}
+
+form > div > label {
+	display: block;
+	margin-bottom: 4px;
+	color: #444;
+}
+
+form > div > input {
+	display: block;
+	width: 100%;
+}
+
+
+.foot {
+	position: absolute;
+	right: 16px;
+	bottom: 0;
+	padding-top: 20px;
+	clear: both;
+}
+
+.submit {
+	text-align: right;
+}
+
+.errors {
+	color: red;
+	width: 100%;
+}
+
+.success {
+	color: green;
+	width: 100%;
+}
+
+.messages {
+	width: 240px;
+	font-size: 12px;
+	overflow: scroll;
+}
