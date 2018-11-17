@@ -140,3 +140,51 @@ const signup = event => {
 }
 
 signupForm.onsubmit = signup
+
+
+// All users need to confirm the email via code or Link
+
+const confirmRegistration = event => {
+	event.preventDefault()
+
+	if (!userPoolIsConfigured()) {
+		userPoolWarning()
+	}
+
+	const email = confirmRegistrationForm['email'].value
+	const code = confirmRegistrationForm['code'].value
+
+	console.log(email)
+	console.log(code)
+
+    if (!cognitoUser) {
+		const userData = {
+	        Username : email,
+	        Pool: userPool
+	    }
+
+		cognitoUser = new AWSCognito
+			.CognitoIdentityServiceProvider
+			.CognitoUser(userData)
+    }
+
+    const errors = confirmRegistrationForm
+    	.getElementsByClassName('errors')[0]
+    const success =confirmRegistrationForm
+    	.getElementsByClassName('success')[0]
+
+	cognitoUser.confirmRegistration(code, true, (err, result) => {
+	    if (err) {
+	    	success.innerHTML = ''
+	    	errors.innerHTML = err
+	        return
+	    }
+
+	    errors.innerHTML = ''
+	    success.innerHTML = JSON.stringify(result, null, 2)
+	})
+
+	return false
+}
+
+confirmRegistrationForm.onsubmit = confirmRegistration
