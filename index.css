@@ -10,8 +10,8 @@ div.container {
 }
 
 form {
-	background: #eee;
-	border-radius: 5px;
+	background: #ddd;
+	border-radius: 3px;
 	flex-direction: row;
 	flex-grow: 1;
 	vertical-align: top;
@@ -30,7 +30,7 @@ form > div {
 form > div > label {
 	display: block;
 	margin-bottom: 4px;
-	color: #444;
+	color: #666;
 }
 
 form > div > input {

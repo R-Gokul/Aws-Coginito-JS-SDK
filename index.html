@@ -1,6 +1,6 @@
 <html>
     <head>
-        
+    <link rel="stylesheet" type="text/css" href="index.css">  
         <!-- <script src="node_modules/amazon-cognito-identity-js/dist/aws-cognito-sdk.min.js"></script> -->
 	<script src="https://cdn.rawgit.com/aws/amazon-cognito-identity-js/3e960090/dist/aws-cognito-sdk.min.js"></script>
 
@@ -12,28 +12,133 @@
     <script src="https://cdn.rawgit.com/aws/aws-sdk-js/d3f0701e/dist/aws-sdk.min.js"></script>
     </head>
     <body>
-        <div id="config">
-            <form name="formConfig">
-                <h2>Configure</h2>
+        <h1 style="text-align:center">AWS Coginto Login For Web Client (JS SDK)</h1>
+        <form name="formConfig">
+            <h2>Configure</h2>
+
+            <div>
+                <label for="UserPoolId">UserPoolId</label>
+                <input type="text" placeholder="UserPoolId" name="UserPoolId">
+            </div>
+
+            <div>
+                <label for="ClientId">ClientId</label>
+                <input type="text" placeholder="ClientId" name="ClientId">
+            </div>
+
+            <div class="foot">
+                <div class="submit">
+                    <button id="clearButton">Clear</button>
+                    <input type="submit" value="Configure">
+                </div>
+            </div>
+        </form>
+        <form name="signupForm">
+                <h2>Sign Up</h2>
     
                 <div>
-                    <label for="UserPoolId">UserPoolId</label>
-                    <input type="text" placeholder="UserPoolId" name="UserPoolId">
+                    <label for="email">Email (username alias)</label>
+                    <input type="email" placeholder="Email" name="email">
                 </div>
     
                 <div>
-                    <label for="ClientId">ClientId</label>
-                    <input type="text" placeholder="ClientId" name="ClientId">
+                    <label for="name">Name</label>
+                    <input type="text" placeholder="Name" name="name"
+                        value="John Smith">
+                </div>
+    
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" placeholder="Password" name="password"
+                        value="Testing123!"">
+                </div>
+    
+                <div>
+                    <label for="phone_number">Phone Number</label>
+                    <input type="tel" placeholder="Phone Number" name="phone_number"
+                        value="+16171234567">
+                </div>
+    
+                <div>
+                    <label for="gender" class="label">Gender</label>
+                    <group>
+                        <input type="radio" name="gender" value="male"
+                            checked>
+                        <label for="male">Male</label>
+                        <input type="radio" name="gender" value="female">
+                        <label for="female">Female</label>
+                    </group>
+                </div>
+    
+                <div>
+                    <label for="birthdate">Birth Date</label>
+                    <input type="date" name="birthdate" placeholder="Birth Date"
+                        value="1972-06-08">
+                </div>
+    
+                <div class="messages">
+                    <div class="errors"></div>
+                    <div class="success"></div>
                 </div>
     
                 <div class="foot">
                     <div class="submit">
-                        <button id="clearButton">Clear</button>
-                        <input type="submit" value="Configure">
+                        <input type="submit" value="Sign Up">
+                    </div>
+    
+                </div>
+            </form>
+    
+            <form name="confirmUser">
+                <h2>Confirm User</h2>
+    
+                <div>
+                    <label for="email">Email (username alias)</label>
+                    <input type="email" placeholder="Email" name="email">
+                </div>
+    
+                <div>
+                    <label for="code">Confirm Code</label>
+                    <input type="text" placeholder="Confirm Code" name="code">
+                </div>
+    
+                <div class="messages">
+                    <div class="errors"></div>
+                    <div class="success"></div>
+                </div>
+    
+                <div class="foot">
+                    <div class="submit">
+                        <input type="submit" value="Confirm">
                     </div>
                 </div>
             </form>
-        </div>
+            
+		<form name="SignInForm">
+                <h2>Sign In User</h2>
+    
+                <div>
+                    <label for="email">Email (username alias)</label>
+                    <input type="email" placeholder="Email" name="email">
+                </div>
+    
+                <div>
+                    <label for="code">Password</label>
+                    <input type="password" placeholder="Password" name="password">
+                </div>
+    
+                <div class="messages">
+                    <div class="errors"></div>
+                    <div class="success"></div>
+                </div>
+    
+                <div class="foot">
+                    <div class="submit">
+                        <input type="submit" value="Login">
+                    </div>
+                </div>
+            </form>
+
         <script src="index.js"></script>  
     </body>
 </html>

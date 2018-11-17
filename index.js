@@ -31,13 +31,13 @@ const setupUserPool = () => {
 		return true
 	}
 
-	if (sessionStorage.PoolId &&
+	if (sessionStorage.UserPoolId &&
 		sessionStorage.ClientId) {
             formConfig['UserPoolId'].value = sessionStorage
 			.UserPoolId
 
-            formConfig['UserPoolId'].value = sessionStorage
-			.UserPoolId
+            formConfig['ClientId'].value = sessionStorage
+			.ClientId
 
 		setUserPool()
 		return true
@@ -52,7 +52,7 @@ const configure = event => {
 	const UserPoolId = formConfig['UserPoolId'].value
 	const ClientId = formConfig['ClientId'].value
 
-	sessionStorage.PoolId = UserPoolId
+	sessionStorage.UserPoolId = UserPoolId
 	sessionStorage.ClientId = ClientId
 
 	const poolData = {
@@ -69,13 +69,20 @@ const configure = event => {
 
 formConfig.onsubmit = configure;
 
+const IsConfigured = () => {
+	if (userPool)  {
+		return true
+	}
+
+	return setupUserPool()
+}
+
 // sign up - (Cognito should have a clinet with web)
-/ Normal User Flow Forms
 
 const signup = event => {
 	event.preventDefault()
 
-	if (!userPoolIsConfigured()) {
+	if (!IsConfigured()) {
 		userPoolWarning()
 	}
 
@@ -120,7 +127,7 @@ const signup = event => {
 		}),
 	]
 
-    const errors = signupFormgi
+    const errors = signupForm
     	.getElementsByClassName('errors')[0]
     const success = signupForm
     	.getElementsByClassName('success')[0]
@@ -144,15 +151,17 @@ signupForm.onsubmit = signup
 
 // All users need to confirm the email via code or Link
 
-const confirmRegistration = event => {
+const confirm = event => {
+
+	alert('test');
 	event.preventDefault()
 
-	if (!userPoolIsConfigured()) {
+	if (!IsConfigured()) {
 		userPoolWarning()
 	}
 
-	const email = confirmRegistrationForm['email'].value
-	const code = confirmRegistrationForm['code'].value
+	const email = confirmUser['email'].value
+	const code = confirmUser['code'].value
 
 	console.log(email)
 	console.log(code)
@@ -168,9 +177,9 @@ const confirmRegistration = event => {
 			.CognitoUser(userData)
     }
 
-    const errors = confirmRegistrationForm
+    const errors = confirmUser
     	.getElementsByClassName('errors')[0]
-    const success =confirmRegistrationForm
+    const success =confirmUser
     	.getElementsByClassName('success')[0]
 
 	cognitoUser.confirmRegistration(code, true, (err, result) => {
@@ -187,4 +196,75 @@ const confirmRegistration = event => {
 	return false
 }
 
-confirmRegistrationForm.onsubmit = confirmRegistration
+confirmUser.onsubmit = confirm
+
+
+//Sign In
+
+const SignIn = event =>  {
+	event.preventDefault()
+
+	if (!IsConfigured()) {
+		userPoolWarning()
+	}
+
+	const form = SignInForm
+
+	const email = form['email'].value
+	const password = form['password'].value
+
+	const identityPoolId = formConfig['UserPoolId'].value
+	const clientId = formConfig['ClientId'].value
+
+	console.log(email)
+	console.log(password)
+
+    const authenticationData = {
+        Username : email,
+        Password : password,
+    }
+
+    const authenticationDetails = new AWSCognito
+		.CognitoIdentityServiceProvider
+		.AuthenticationDetails(authenticationData)
+
+    if (!cognitoUser) {
+		const userData = {
+	        Username : email,
+	        Pool: userPool
+	    }
+
+		cognitoUser = new AWSCognito
+			.CognitoIdentityServiceProvider
+			.CognitoUser(userData)
+    }
+
+    const errors = form.getElementsByClassName('errors')[0]
+    const success = form.getElementsByClassName('success')[0]
+
+    cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: result => {
+
+            success.innerHTML = ('access token + ' + result.getAccessToken().getJwtToken())
+
+            // POTENTIAL: Region needs to be set if not already set previously elsewhere.
+            // AWS.config.region = '<region>';
+
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: identityPoolId,
+                Logins : {
+                    'cognito-idp.us-east-1.amazonaws.com/us-east-1_gplidiDbz': result.getIdToken().getJwtToken()
+                }
+            })
+
+            // Instantiate aws sdk service objects now that the credentials have been updated.
+            // example: var s3 = new AWS.S3()
+        },
+
+        onFailure: err => {
+            alert(err)
+        }
+    })
+}
+
+SignInForm.onsubmit = SignIn
